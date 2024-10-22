@@ -1,1 +1,2 @@
-<rich.table.Table object at 0x1046c9820>
+{'team name': 'Chicago Fire', 'country': 'America', 'league': 'MLS'}
+{'team name': 'Real Madrid', 'country': 'Spain', 'league': 'La Liga'}

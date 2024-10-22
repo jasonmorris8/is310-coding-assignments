@@ -1,39 +1,53 @@
-import rich
-from rich import print
 from rich.console import Console
 from rich.table import Table
-import sys
+import csv
+import os
 
-console=Console()
-console.print("Here is some intitial data", style="bold cyan")
-table=Table(title="Football Teams")
-table.add_column("Team", justify="center", style="bold")
-table.add_column("Country", justify="center", style="bold")
-table.add_column("Ranking", justify="center", style="bold")
+console = Console()
 
-table.add_row("Liverpool", "England", "1")
-table.add_row("Real Madrid", "Spain", "2")
-table.add_row("Bayern Munich", "Germany", "3")
-table.add_row("Juventus", "Italy", "4")
-table.add_row("Paris Saint-Germain", "France", "5")
+def show_initial_data():
+    console.print("\n[bold cyan]Here is some initial data:[/bold cyan]")
+    table=Table(title="Football Teams")
+    table.add_column("Team Name", style="red", no_wrap=True)
+    table.add_column("Country", style="purple")
+    table.add_column("League", justify="right")
+    
+    table.add_row("Liverpool", "England", "EPL")
+    table.add_row("Arsenal", "England", "EPL")
+    table.add_row("Chelsea", "England", "EPL")
+    table.add_row("FC Barcelona", "Spain", "La Liga")
 
-console.print(table)
-console.print("\n[bold cyan]Now I want you to enter your favorite football teams:[/bold cyan]")
+    console.print(table)
 
-team_name = input("Enter the name of the team: ")
-team_country = input("Enter the country the team is located in: ")
-team_ranking = input("Enter the ranking of the team: ")
-while True:
-    team_name = input("Enter the name of the team (or 'q' to quit): ")
-    if team_name.lower() == 'q':
-        break
-    team_country = input("Enter the country the team is located in: ")
-    team_ranking = input("Enter the ranking of the team: ")
-    table.add_row(team_name, team_country, team_ranking)
-console.print(table)
-file_path = sys.argv[1] if len(sys.argv) > 1 else "/Users/jmo/Desktop/is310-coding-assignments/python-libraries/teams_data.txt"
+def get_team_data():
+    team_name=console.input("Enter the team name")
+    team_country=console.input("Enter the team's country")
+    team_league=console.input("Enter the team's league")
 
-# Open the file in write mode
-with open(file_path, "w") as file:
-    # Write the table data to the file
-    file.write(str(table))
+    return{"team name":team_name, "country":team_country, "league":team_league}
+
+def confirm_data_and_write(football_teams):
+    file_path = "teams_data.txt"
+    with open(file_path, "w") as file:
+        for team in football_teams:
+            file.write(f"{team}\n")
+    console.print(f"\n[bold blue]Teams saved successfully to {file_path}[/bold blue]")
+    return True
+    
+def main():
+    show_initial_data()
+    football_teams=[]
+    while True:
+        football_team=get_team_data()
+        football_teams.append(football_team)
+        add_more=console.input("\nWould you like to add another team? (y/n): ").lower()
+        if add_more=="n":
+            break
+    
+    while not confirm_data_and_write(football_teams):
+        football_teams.clear()
+        console.print("\nRe-enter all the teams.\n")
+        football_teams.append(get_team_data())
+
+if __name__ == "__main__":
+    main()
