@@ -7,8 +7,11 @@ The dataset is included locally in the pandas-eda folder under the name "novels.
 To use the notebook you must have pandas, altair, and matplotlib installed.
 
 To install each of these:
+
 pip install pandas
+
 pip install "altair[all]"
+
 pip install matplotlib
 
 Remember to activate your virtual environment.
